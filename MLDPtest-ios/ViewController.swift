@@ -94,7 +94,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         self.peripheral.delegate = self
         
         // サービス探索開始
-        //        self.peripheral.discoverServices(nil)
+                self.peripheral.discoverServices([target_service_uuid])
     }
     
     
@@ -134,16 +134,16 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         }
         print("\(characteristics.count) 個のキャラクタリスティックを発見！ \(characteristics)")
         
-        //        for characteristic in characteristics where characteristic.uuid.isEqual(target_charactaristic_uuid) {
-        //
-        //            outputCharacteristic = characteristic
-        //            print("Write Indicate UUID を発見！")
-        //
-        //            //            peripheral.readValueForCharacteristic(characteristic)
-        //
-        //            // 更新通知受け取りを開始する
-        //            peripheral.setNotifyValue(true, for: characteristic)
-        //        }
+                for characteristic in characteristics where characteristic.uuid.isEqual(target_charactaristic_uuid) {
+        
+                    outputCharacteristic = characteristic
+                    print("Write Indicate UUID を発見！")
+        
+                    //            peripheral.readValueForCharacteristic(characteristic)
+        
+                    // 更新通知受け取りを開始する
+                    peripheral.setNotifyValue(true, for: characteristic)
+                }
     }
     
     // Notify開始／停止時に呼ばれる
