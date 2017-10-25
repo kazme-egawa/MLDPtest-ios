@@ -19,16 +19,11 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     var outputCharacteristic: CBCharacteristic!
     
     let target_peripheral_name = "EGABLE2D4D"
-    //    let target_service_uuid = CBUUID(string: "C4CB6B0E-AF17-11E7-ABC4-CEC278B6B50A")
     let target_service_uuid = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000300")
-    //    let unknown_service_uuid = CBUUID(string: "C956F3CA-24EB-11E7-93AE-92361F002671")
-    //    let target_charactaristic_uuid = CBUUID(string: "C4CB71BC-AF17-11E7-ABC4-CEC278B6B50A")
-    //    let target_charactaristic_uuid2 = CBUUID(string: "C4CB72F2-AF17-11E7-ABC4-CEC278B6B50A")
     let target_charactaristic_uuid = CBUUID(string: "00035B03-58E6-07DD-021A-08123A000301")
     let target_charactaristic_uuid2 = CBUUID(string: "00035B03-58E6-07DD-021A-08123A0003FF")
     var response = ""
     
-    //    @IBOutlet weak var scanBtn: UIButton!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var textView: UITextView!
     
@@ -49,6 +44,22 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // キーボードを閉じる
         self.view.endEditing(true)
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        // 文字数最大を決める.
+        let maxLength: Int = 18
+        
+        // 入力済みの文字と入力された文字を合わせて取得.
+        let str = textField.text! + string
+        
+        // 文字数がmaxLength以下ならtrueを返す.
+        if str.characters.count < maxLength {
+            return true
+        }
+        print("18文字を超えています")
+        return false
     }
     
     // MARK: CBCentralManagerDelegate
@@ -94,7 +105,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         self.peripheral.delegate = self
         
         // サービス探索開始
-                self.peripheral.discoverServices([target_service_uuid])
+        self.peripheral.discoverServices([target_service_uuid])
     }
     
     
@@ -117,7 +128,6 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         for service in services {
             // キャラクタリスティックを探索開始
             self.peripheral.discoverCharacteristics(nil, for: service)
-            //            self.peripheral.discoverCharacteristics([target_charactaristic_uuid, target_charactaristic_uuid2], for: service)
         }
     }
     
@@ -169,7 +179,12 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             return
         }
         
-        //        updateWithData(data: characteristic.value!)
+        let data = characteristic.value
+        let dataString = String(data: data!, encoding: String.Encoding.utf8)
+        
+        print("データ更新！ characteristic UUID: \(characteristic.uuid), value: \(dataString)")
+        
+        responseCommand(str: dataString!)
     }
     
     // データ書き込みが完了すると呼ばれる
@@ -182,18 +197,24 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         print("書き込み成功！service uuid: \(characteristic.service.uuid), characteristic uuid: \(characteristic.uuid)")
     }
     
+    func responseCommand(str: String) {
+        response += str
+
+        if response.contains("\r") {
+            print(response)
+
+            textView.text = textView.text + response
+            response = ""
+        }
+    }
+
+    
     // =========================================================================
     // MARK: Actions
     
     @IBAction func scanBtnTapped(_ sender: UIButton) {
-        //        if isScanning {
-        //            centralManager.stopScan()
-        //            isScanning = false
-        //        } else {
-        //            isScanning = true
         // BLEデバイスの検出を開始.
         centralManager.scanForPeripherals(withServices:[target_service_uuid], options: nil)
-        //        }
     }
     
     @IBAction func sendBtnTapped(_ sender: UIButton) {
@@ -205,10 +226,8 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             return;
         }
         
-//        let str = "$000 000 GST\r\n"
-        
         var str = textField.text!
-//        str = str + "\r\n"
+        str = str + "\r\n"
         
         let data = str.data(using: String.Encoding.utf8)
         
