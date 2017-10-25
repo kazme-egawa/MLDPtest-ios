@@ -139,10 +139,14 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
                     outputCharacteristic = characteristic
                     print("Write Indicate UUID を発見！")
         
-                    //            peripheral.readValueForCharacteristic(characteristic)
+                    peripheral.readValue(for: characteristic)
         
                     // 更新通知受け取りを開始する
                     peripheral.setNotifyValue(true, for: characteristic)
+                    
+                    let str = "MLDPstart\r\n"
+                    let data = str.data(using: String.Encoding.utf8)
+                    peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
                 }
     }
     
@@ -175,8 +179,6 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             return
         }
         
-        //        print(NSString(data: characteristic.value!, encoding: NSUTF8StringEncoding))
-        
         print("書き込み成功！service uuid: \(characteristic.service.uuid), characteristic uuid: \(characteristic.uuid)")
     }
     
@@ -197,9 +199,28 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBAction func sendBtnTapped(_ sender: UIButton) {
         // キーボードを閉じる
         textField.endEditing(true)
+        
+        if outputCharacteristic == nil {
+            print("\(target_peripheral_name) is not ready!")
+            return;
+        }
+        
+//        let str = "$000 000 GST\r\n"
+        
+        var str = textField.text!
+//        str = str + "\r\n"
+        
+        let data = str.data(using: String.Encoding.utf8)
+        
+        print("request: \(UInt64(NSDate().timeIntervalSince1970 * 1000))")
+        
+        peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
+        
+        textField.text = ""
     }
     
     @IBAction func clearBtnTapped(_ sender: UIButton) {
+        textView.text = ""
     }
     
     
