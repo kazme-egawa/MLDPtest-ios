@@ -154,7 +154,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
                     // 更新通知受け取りを開始する
                     peripheral.setNotifyValue(true, for: characteristic)
                     
-                    let str = "MLDPstart\r\n"
+                    let str = "DoFMode:on\r\n"
                     let data = str.data(using: String.Encoding.utf8)
                     peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
                 }
@@ -182,7 +182,8 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         let data = characteristic.value
         let dataString = String(data: data!, encoding: String.Encoding.utf8)
         
-        print("データ更新！ characteristic UUID: \(characteristic.uuid), value: \(dataString)")
+        print("データ更新！")
+//            characteristic UUID: \(characteristic.uuid), value: \(dataString)
         
         responseCommand(str: dataString!)
     }
@@ -200,7 +201,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     func responseCommand(str: String) {
         response += str
 
-        if response.contains("\r") {
+        if response.contains("\r\n") {
             print(response)
 
             textView.text = textView.text + response
@@ -236,6 +237,27 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
         
         textField.text = ""
+    }
+    @IBAction func modeSwitch(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex{
+        case 0:
+            let str = "DoFMode:on\r\n"
+            let data = str.data(using: String.Encoding.utf8)
+            peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            print(data!)
+        case 1:
+            let str = "ColorMode:on\r\n"
+            let data = str.data(using: String.Encoding.utf8)
+            peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            print(data!)
+        case 2:
+            let str = "AHRSMode:on\r\n"
+            let data = str.data(using: String.Encoding.utf8)
+            peripheral.writeValue(data!, for: outputCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            print(data!)
+        default:
+            print("nothing")
+        }
     }
     
     @IBAction func clearBtnTapped(_ sender: UIButton) {

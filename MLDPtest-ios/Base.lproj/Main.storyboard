@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5zc-TY-XmR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5zc-TY-XmR">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="jRl-mL-Fee">
             <objects>
-                <viewController id="5zc-TY-XmR" customClass="ViewController" customModule="helloworld" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5zc-TY-XmR" customClass="ViewController" customModule="MLDPtest_ios" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K9I-n9-iCb"/>
                         <viewControllerLayoutGuide type="bottom" id="v26-Wk-jzb"/>
@@ -67,11 +67,26 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xhO-aG-1Oq">
-                                <rect key="frame" x="20" y="199" width="335" height="411"/>
+                                <rect key="frame" x="20" y="236" width="335" height="374"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="VD8-mH-TzZ">
+                                <rect key="frame" x="36" y="199" width="303" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="303" id="DUY-I9-wz4"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="DoFMode"/>
+                                    <segment title="ColorMode"/>
+                                    <segment title="AHRSMode"/>
+                                </segments>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="modeSwitch:" destination="5zc-TY-XmR" eventType="valueChanged" id="srC-91-HCT"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -83,12 +98,14 @@
                             <constraint firstItem="xhO-aG-1Oq" firstAttribute="leading" secondItem="adZ-tC-PuA" secondAttribute="leading" constant="20" id="KRz-ML-BJl"/>
                             <constraint firstItem="XOR-QR-dAf" firstAttribute="top" secondItem="reQ-W1-5Qm" secondAttribute="bottom" constant="30" id="P8G-0d-slT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XOR-QR-dAf" secondAttribute="trailing" constant="20" id="SLs-oV-TSS"/>
+                            <constraint firstItem="VD8-mH-TzZ" firstAttribute="centerX" secondItem="adZ-tC-PuA" secondAttribute="centerX" id="VMZ-KO-ejK"/>
                             <constraint firstItem="v26-Wk-jzb" firstAttribute="top" secondItem="xhO-aG-1Oq" secondAttribute="bottom" constant="57" id="VaZ-Pb-ONi"/>
                             <constraint firstItem="HwI-Wf-ABx" firstAttribute="top" secondItem="XOR-QR-dAf" secondAttribute="bottom" constant="8" id="Xrb-Cs-9Qd"/>
                             <constraint firstItem="reQ-W1-5Qm" firstAttribute="leading" secondItem="adZ-tC-PuA" secondAttribute="leadingMargin" constant="20" id="mPy-xC-e41"/>
+                            <constraint firstItem="VD8-mH-TzZ" firstAttribute="top" secondItem="HwI-Wf-ABx" secondAttribute="bottom" constant="9" id="pYa-ZU-e0d"/>
                             <constraint firstAttribute="trailing" secondItem="HwI-Wf-ABx" secondAttribute="trailing" constant="20" id="sQG-d1-1r0"/>
                             <constraint firstAttribute="trailing" secondItem="xhO-aG-1Oq" secondAttribute="trailing" constant="20" id="sdN-as-Uwo"/>
-                            <constraint firstItem="xhO-aG-1Oq" firstAttribute="top" secondItem="HwI-Wf-ABx" secondAttribute="bottom" constant="9" id="ue1-Vb-PV5"/>
+                            <constraint firstItem="xhO-aG-1Oq" firstAttribute="top" secondItem="VD8-mH-TzZ" secondAttribute="bottom" constant="9" id="ue1-Vb-PV5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nko-J5-fd0"/>
                     </view>
@@ -100,7 +117,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yYt-1B-s14" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="105" y="113"/>
+            <point key="canvasLocation" x="104.8" y="112.89355322338831"/>
         </scene>
     </scenes>
 </document>
